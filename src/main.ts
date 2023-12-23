@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+import gsap from "gsap";
 function main() {
   const canvas = document.getElementById("c");
   if (!canvas) {
@@ -10,7 +10,7 @@ function main() {
   const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 
   const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 5);
-  camera.position.z = 2;
+  camera.position.z = 4;
 
   const scene = new THREE.Scene();
 
@@ -39,10 +39,19 @@ function main() {
     return needResize;
   }
 
-  function render(time: number) {
-    time *= 0.001;
-    cube.rotation.x = time;
-    cube.rotation.y = time;
+  // const clock = new THREE.Clock();
+
+  gsap.to(cube.position, { x: 2, duration: 2, delay: 1 });
+
+  const tick = () => {
+    // let elapsedTime = clock.getElapsedTime();
+
+    // time *= 0.001;
+    // cube.rotation.x = elapsedTime;
+    // camera.position.y = Math.sin(elapsedTime);
+    // camera.position.x = Math.cos(elapsedTime);
+
+    // camera.lookAt(cube.position);
 
     if (resizeRendererToDisplaySize(renderer)) {
       const canvas = renderer.domElement;
@@ -52,10 +61,10 @@ function main() {
 
     renderer.render(scene, camera);
 
-    requestAnimationFrame(render);
-  }
+    requestAnimationFrame(tick);
+  };
 
-  requestAnimationFrame(render);
+  tick();
 }
 
 main();
